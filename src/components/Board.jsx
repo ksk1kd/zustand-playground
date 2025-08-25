@@ -1,4 +1,5 @@
 import { useGameStore } from '../hooks/useGameStore'
+import { Square } from './Square'
 
 export function Board() {
   const squares = useGameStore((state) => state.squares)
@@ -24,7 +25,7 @@ export function Board() {
     >
       {squares.map((square, squareIndex) => (
         <Square
-          key={square}
+          key={squareIndex}
           value={square}
           onSquareClick={() => handleClick(squareIndex)}
         />
