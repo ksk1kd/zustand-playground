@@ -1,4 +1,3 @@
-import { useGameStore } from '../hooks/useGameStore'
 import {
   calculateStatus,
   calculateTurns,
@@ -6,11 +5,7 @@ import {
 } from '../utils/calculator'
 import { Square } from './Square'
 
-export function Board() {
-  const xIsNext = useGameStore((state) => state.xIsNext)
-  const setXIsNext = useGameStore((state) => state.setXIsNext)
-  const squares = useGameStore((state) => state.squares)
-  const setSquares = useGameStore((state) => state.setSquares)
+export function Board({ xIsNext, squares, onPlay }) {
   const winner = calculateWinner(squares)
   const turns = calculateTurns(squares)
   const player = xIsNext ? 'X' : 'O'
@@ -20,8 +15,7 @@ export function Board() {
     if (squares[i] || winner) return
     const nextSquares = squares.slice()
     nextSquares[i] = player
-    setSquares(nextSquares)
-    setXIsNext(!xIsNext)
+    onPlay(nextSquares)
   }
 
   return (
