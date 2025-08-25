@@ -1,4 +1,9 @@
 import { useGameStore } from '../hooks/useGameStore'
+import {
+  calculateStatus,
+  calculateTurns,
+  calculateWinner,
+} from '../utils/calculator'
 import { Square } from './Square'
 
 export function Board() {
@@ -6,10 +11,13 @@ export function Board() {
   const setXIsNext = useGameStore((state) => state.setXIsNext)
   const squares = useGameStore((state) => state.squares)
   const setSquares = useGameStore((state) => state.setSquares)
+  const winner = calculateWinner(squares)
+  const turns = calculateTurns(squares)
   const player = xIsNext ? 'X' : 'O'
+  const status = calculateStatus(winner, turns, player)
 
   function handleClick(i) {
-    if (squares[i]) return
+    if (squares[i] || winner) return
     const nextSquares = squares.slice()
     nextSquares[i] = player
     setSquares(nextSquares)
@@ -17,23 +25,26 @@ export function Board() {
   }
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
-        gridTemplateRows: 'repeat(3, 1fr)',
-        width: 'calc(3 * 2.5rem)',
-        height: 'calc(3 * 2.5rem)',
-        border: '1px solid #999',
-      }}
-    >
-      {squares.map((square, squareIndex) => (
-        <Square
-          key={squareIndex}
-          value={square}
-          onSquareClick={() => handleClick(squareIndex)}
-        />
-      ))}
-    </div>
+    <>
+      <div style={{ marginBottom: '0.5rem' }}>{status}</div>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gridTemplateRows: 'repeat(3, 1fr)',
+          width: 'calc(3 * 2.5rem)',
+          height: 'calc(3 * 2.5rem)',
+          border: '1px solid #999',
+        }}
+      >
+        {squares.map((square, squareIndex) => (
+          <Square
+            key={squareIndex}
+            value={square}
+            onSquareClick={() => handleClick(squareIndex)}
+          />
+        ))}
+      </div>
+    </>
   )
 }
