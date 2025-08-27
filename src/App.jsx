@@ -1,3 +1,4 @@
+import { Bound } from './components/Bound'
 import { Game } from './components/Game'
 import { Person } from './components/Person'
 
@@ -16,6 +17,9 @@ function App() {
           </div>
           <div>
             <Person />
+          </div>
+          <div>
+            <Bound />
           </div>
         </div>
       </div>
